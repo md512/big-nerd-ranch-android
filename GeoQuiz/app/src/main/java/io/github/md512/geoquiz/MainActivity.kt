@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 
 private lateinit var trueButton: Button
 private lateinit var falseButton: Button
-private lateinit var nextButton: Button
+private lateinit var nextButton: ImageButton
+private lateinit var backButton: ImageButton
 private lateinit var questionTextView: TextView
 
 private val questionBank = listOf(
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
         nextButton = findViewById(R.id.next_button)
+        backButton = findViewById(R.id.back_button)
         questionTextView = findViewById(R.id.question_text_view)
 
         nextButton.setOnClickListener{view: View ->
@@ -37,14 +40,21 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
         }
 
+        backButton.setOnClickListener{view: View ->
+            currentIndex = (currentIndex - 1) % questionBank.size
+            updateQuestion()
+        }
+
         trueButton.setOnClickListener{view: View ->
-            val toast = Toast.makeText(this, R.string.correct_toast, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.TOP, 0, 0)
-            toast.show()
+            checkAnswer(true)
         }
 
         falseButton.setOnClickListener{view: View ->
-            Toast.makeText(this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show()
+            checkAnswer(false)
+        }
+
+        questionTextView.setOnClickListener { view: View ->
+            updateQuestion()
         }
 
         updateQuestion()
@@ -55,7 +65,13 @@ class MainActivity : AppCompatActivity() {
         questionTextView.setText(questionTextResId)
     }
 
-    private fun checkAndwer(userAnswer: Boolean) {
-        
+    private fun checkAnswer(userAnswer: Boolean) {
+        val correctAnswer = questionBank[currentIndex].answer
+        val messageResId = if (userAnswer == correctAnswer) {
+            R.string.correct_toast
+        } else {
+            R.string.incorrect_toast
+        }
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
 }
