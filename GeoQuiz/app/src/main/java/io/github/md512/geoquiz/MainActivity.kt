@@ -2,6 +2,7 @@ package io.github.md512.geoquiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
@@ -23,10 +24,12 @@ private val questionBank = listOf(
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true))
 private var currentIndex = 0
+private const val TAG = "Лог MainActivity"
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate called")
         setContentView(R.layout.activity_main)
 
         trueButton = findViewById(R.id.true_button)
@@ -60,6 +63,26 @@ class MainActivity : AppCompatActivity() {
         updateQuestion()
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy called")
+    }
+
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         questionTextView.setText(questionTextResId)
@@ -74,4 +97,5 @@ class MainActivity : AppCompatActivity() {
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
+
 }
