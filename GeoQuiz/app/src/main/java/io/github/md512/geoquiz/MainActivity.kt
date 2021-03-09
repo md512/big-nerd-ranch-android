@@ -10,23 +10,25 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 
-private lateinit var trueButton: Button
-private lateinit var falseButton: Button
-private lateinit var nextButton: ImageButton
-private lateinit var backButton: ImageButton
-private lateinit var questionTextView: TextView
-
-private val questionBank = listOf(
-        Question(R.string.question_australia, true),
-        Question(R.string.question_oceans, true),
-        Question(R.string.question_mideast, false),
-        Question(R.string.question_africa, false),
-        Question(R.string.question_americas, true),
-        Question(R.string.question_asia, true))
-private var currentIndex = 0
 private const val TAG = "Лог MainActivity"
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var trueButton: Button
+    private lateinit var falseButton: Button
+    private lateinit var nextButton: ImageButton
+    private lateinit var backButton: ImageButton
+    private lateinit var questionTextView: TextView
+    private val questionBank = listOf(
+            Question(R.string.question_australia, true),
+            Question(R.string.question_oceans, true),
+            Question(R.string.question_mideast, false),
+            Question(R.string.question_africa, false),
+            Question(R.string.question_americas, true),
+            Question(R.string.question_asia, true))
+    private var currentIndex = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate called")
@@ -38,21 +40,21 @@ class MainActivity : AppCompatActivity() {
         backButton = findViewById(R.id.back_button)
         questionTextView = findViewById(R.id.question_text_view)
 
-        nextButton.setOnClickListener{view: View ->
+        nextButton.setOnClickListener { view: View ->
             currentIndex = (currentIndex + 1) % questionBank.size
             updateQuestion()
         }
 
-        backButton.setOnClickListener{view: View ->
+        backButton.setOnClickListener { view: View ->
             currentIndex = (currentIndex - 1) % questionBank.size
             updateQuestion()
         }
 
-        trueButton.setOnClickListener{view: View ->
+        trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
         }
 
-        falseButton.setOnClickListener{view: View ->
+        falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
         }
 
