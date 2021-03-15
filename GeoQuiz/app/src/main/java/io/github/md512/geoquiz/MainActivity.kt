@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
             Question(R.string.question_americas, true),
             Question(R.string.question_asia, true))
     private var currentIndex = 0
-
+    private var score = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         nextButton.setOnClickListener { view: View ->
             currentIndex = (currentIndex + 1) % questionBank.size
             updateQuestion()
+            blockButtons(false)
         }
 
         backButton.setOnClickListener { view: View ->
@@ -52,10 +53,12 @@ class MainActivity : AppCompatActivity() {
 
         trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
+            blockButtons(true)
         }
 
         falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
+            blockButtons(true)
         }
 
         questionTextView.setOnClickListener { view: View ->
@@ -94,10 +97,22 @@ class MainActivity : AppCompatActivity() {
         val correctAnswer = questionBank[currentIndex].answer
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
+            score++
         } else {
             R.string.incorrect_toast
         }
+
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun blockButtons(isBlocked: Boolean) {
+        if (isBlocked) {
+            trueButton.setEnabled(false)
+            falseButton.setEnabled(false)
+        } else {
+            trueButton.setEnabled(true)
+            falseButton.setEnabled(true)
+        }
     }
 
 }
