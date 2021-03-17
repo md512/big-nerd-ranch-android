@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             Question(R.string.question_africa, false),
             Question(R.string.question_americas, true),
             Question(R.string.question_asia, true))
+    private var blockedQuestions = BooleanArray(questionBank.size)
     private var currentIndex = 0
     private var score = 0
 
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         nextButton.setOnClickListener { view: View ->
             currentIndex = (currentIndex + 1) % questionBank.size
             updateQuestion()
-            blockButtons(false)
         }
 
         backButton.setOnClickListener { view: View ->
@@ -53,12 +53,12 @@ class MainActivity : AppCompatActivity() {
 
         trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
-            blockButtons(true)
+            blockedQuestions[currentIndex] = true
         }
 
         falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
-            blockButtons(true)
+            blockedQuestions[currentIndex] = true
         }
 
         questionTextView.setOnClickListener { view: View ->
@@ -91,6 +91,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         questionTextView.setText(questionTextResId)
+        if(blockedQuestions[currentIndex]) {
+            trueButton.setEnabled(false)
+            falseButton.setEnabled(false)
+        }
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
@@ -101,18 +105,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             R.string.incorrect_toast
         }
-
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun blockButtons(isBlocked: Boolean) {
-        if (isBlocked) {
-            trueButton.setEnabled(false)
-            falseButton.setEnabled(false)
-        } else {
-            trueButton.setEnabled(true)
-            falseButton.setEnabled(true)
-        }
     }
 
 }
