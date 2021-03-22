@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
         questionTextView = findViewById(R.id.question_text_view)
 
         nextButton.setOnClickListener { view: View ->
-            currentIndex = (currentIndex + 1) % questionBank.size
-            updateQuestion()
+                currentIndex = (currentIndex + 1) % questionBank.size
+                updateQuestion()
         }
 
         backButton.setOnClickListener { view: View ->
@@ -54,11 +54,15 @@ class MainActivity : AppCompatActivity() {
         trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
             blockedQuestions[currentIndex] = true
+            trueButton.setEnabled(false)
+            falseButton.setEnabled(false)
         }
 
         falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
             blockedQuestions[currentIndex] = true
+            trueButton.setEnabled(false)
+            falseButton.setEnabled(false)
         }
 
         questionTextView.setOnClickListener { view: View ->
@@ -94,18 +98,27 @@ class MainActivity : AppCompatActivity() {
         if(blockedQuestions[currentIndex]) {
             trueButton.setEnabled(false)
             falseButton.setEnabled(false)
+        } else {
+            trueButton.setEnabled(true)
+            falseButton.setEnabled(true)
         }
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionBank[currentIndex].answer
-        val messageResId = if (userAnswer == correctAnswer) {
-            R.string.correct_toast
+        val messageResId: Int
+        if (userAnswer == correctAnswer) {
+            messageResId  = R.string.correct_toast
             score++
         } else {
-            R.string.incorrect_toast
+            messageResId = R.string.incorrect_toast
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+
+        if (currentIndex == questionBank.size - 1) {
+            val gameResult = score * 100 / questionBank.size
+            Toast.makeText(this, getResources().getString(R.string.show_result) + gameResult.toString(), Toast.LENGTH_LONG).show()
+        }
     }
 
 }
