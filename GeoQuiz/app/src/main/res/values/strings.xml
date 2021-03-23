@@ -12,5 +12,4 @@
     <string name="incorrect_toast">Incorrect!</string>
     <string name="next_button">Next</string>
     <string name="back_button">Back</string>
-    <string name="show_result">Процент верных ответов: </string>
 </resources>

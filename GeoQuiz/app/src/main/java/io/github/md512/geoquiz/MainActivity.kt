@@ -9,6 +9,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.*
 
 private const val TAG = "Лог MainActivity"
 
@@ -19,21 +22,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var questionTextView: TextView
-    private val questionBank = listOf(
-            Question(R.string.question_australia, true),
-            Question(R.string.question_oceans, true),
-            Question(R.string.question_mideast, false),
-            Question(R.string.question_africa, false),
-            Question(R.string.question_americas, true),
-            Question(R.string.question_asia, true))
-    private var blockedQuestions = BooleanArray(questionBank.size)
-    private var currentIndex = 0
-    private var score = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate called")
         setContentView(R.layout.activity_main)
+        val provider: ViewModelProvider = ViewModelProviders.of(this)
+        val quizViewModel = provider.get(QuizViewModel::class.java)
+        Log.d(TAG, "Got a QuizViewModel $quizViewModel")
 
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
@@ -53,16 +49,10 @@ class MainActivity : AppCompatActivity() {
 
         trueButton.setOnClickListener { view: View ->
             checkAnswer(true)
-            blockedQuestions[currentIndex] = true
-            trueButton.setEnabled(false)
-            falseButton.setEnabled(false)
         }
 
         falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
-            blockedQuestions[currentIndex] = true
-            trueButton.setEnabled(false)
-            falseButton.setEnabled(false)
         }
 
         questionTextView.setOnClickListener { view: View ->
@@ -95,30 +85,18 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         questionTextView.setText(questionTextResId)
-        if(blockedQuestions[currentIndex]) {
-            trueButton.setEnabled(false)
-            falseButton.setEnabled(false)
-        } else {
-            trueButton.setEnabled(true)
-            falseButton.setEnabled(true)
-        }
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionBank[currentIndex].answer
-        val messageResId: Int
-        if (userAnswer == correctAnswer) {
-            messageResId  = R.string.correct_toast
-            score++
+        val messageResId: Int =  if (userAnswer == correctAnswer) {
+            R.string.correct_toast
         } else {
-            messageResId = R.string.incorrect_toast
+            R.string.incorrect_toast
         }
+
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
 
-        if (currentIndex == questionBank.size - 1) {
-            val gameResult = score * 100 / questionBank.size
-            Toast.makeText(this, getResources().getString(R.string.show_result) + gameResult.toString(), Toast.LENGTH_LONG).show()
-        }
     }
 
 }
