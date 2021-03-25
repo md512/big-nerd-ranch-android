@@ -1,5 +1,6 @@
 package io.github.md512.geoquiz
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -22,8 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
     private lateinit var nextButton: ImageButton
-    private lateinit var backButton: ImageButton
     private lateinit var questionTextView: TextView
+    private lateinit var cheatButton: Button
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProviders.of(this).get(QuizViewModel::class.java)
     }
@@ -39,17 +40,12 @@ class MainActivity : AppCompatActivity() {
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
         nextButton = findViewById(R.id.next_button)
-        backButton = findViewById(R.id.back_button)
         questionTextView = findViewById(R.id.question_text_view)
+        cheatButton = findViewById(R.id.cheat_button)
 
         nextButton.setOnClickListener { view: View ->
                 quizViewModel.moveToNext()
                 updateQuestion()
-        }
-
-        backButton.setOnClickListener { view: View ->
-            quizViewModel.moveToBack()
-            updateQuestion()
         }
 
         trueButton.setOnClickListener { view: View ->
@@ -62,6 +58,11 @@ class MainActivity : AppCompatActivity() {
 
         questionTextView.setOnClickListener { view: View ->
             updateQuestion()
+        }
+
+        cheatButton.setOnClickListener{ view: View ->
+            val intent = Intent(this, CheatActivity::class.java)
+            startActivity(intent)
         }
 
         updateQuestion()
