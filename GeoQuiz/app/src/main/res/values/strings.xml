@@ -6,11 +6,11 @@
     <string name="question_africa">Исток Нила находится в Египте.</string>
     <string name="question_americas">Амазонка самая длинная река в обеих Америках.</string>
     <string name="question_asia">Озеро Байкал самое старое и глубокое пресноводное озеро.</string>
-    <string name="true_button">True</string>
-    <string name="false_button">False</string>
-    <string name="correct_toast">Correct!</string>
-    <string name="incorrect_toast">Incorrect!</string>
-    <string name="next_button">Next</string>
+    <string name="true_button">Да</string>
+    <string name="false_button">Нет</string>
+    <string name="correct_toast">Верно!</string>
+    <string name="incorrect_toast">Не верно!</string>
+    <string name="next_button">Дальше</string>
     <string name="warning_text">Вы уверены, что хотите увидеть это?</string>
     <string name="show_answer_button">Показать ответ</string>
     <string name="cheat_button">Подсказка</string>

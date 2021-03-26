@@ -1,5 +1,6 @@
 package io.github.md512.geoquiz
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders.*
 
 private const val TAG = "Лог MainActivity"
 private const val KEY_INDEX = "index"
+private const val REQUEST_CODE_CHEAT = 0
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,8 +63,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         cheatButton.setOnClickListener{ view: View ->
-            val intent = Intent(this, CheatActivity::class.java)
-            startActivity(intent)
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+            startActivityForResult(intent, REQUEST_CODE_CHEAT)
         }
 
         updateQuestion()
